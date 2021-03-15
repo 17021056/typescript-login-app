@@ -1,0 +1,24 @@
+.profile { 
+    font-family:'Courier New', Courier, monospace;
+    height:100vh;
+    margin-top: 56px;
+    font-weight: bold;
+    background-image: url('../../image/bg-profile.jpg');
+    background-size: cover;
+}
+.profile-card{
+    background-color: white;
+    height:40vh;
+    border-radius:14px;
+    opacity: 0.8;
+}
+.profile-card__icon{
+    height:100px;
+    padding: 20px;
+}
+.profile-card i{
+    height:100px;
+    width: 100px;
+    border-style: solid;
+    border-radius:50px
+}

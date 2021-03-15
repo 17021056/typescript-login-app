@@ -1,0 +1,35 @@
+#container { 
+    font-family:'Courier New', Courier, monospace;
+    height:100vh;
+    font-weight: bold;
+    background-image: url('../../image/bg-login.jpg');
+    background-size: cover;
+}
+#container .content {
+    display:flex;
+    height: 100vh !important;
+    margin :0px 15px;
+    align-items: center;
+    
+}
+#container .content__form {
+    display: flex;
+    flex-direction:column;
+    justify-content:center;
+    background-color: rgba(109, 104, 104, 0.4);
+    border-radius: 10px;
+    animation: example ease-in 0.5s;
+}
+#container .form__input-email{
+    border:none;
+    border-radius: 10px;
+    outline:none;
+    
+}
+#container .form__check-input{
+    text-align: left;
+}
+@keyframes example {
+    from {opacity:0;}
+    to {opacity: 1;}
+  }
