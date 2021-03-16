@@ -10,7 +10,7 @@ function RoomPage() {
         dispatch(actions.increment())
     }
     return (
-        <div className="text-center mt-5">
+        <div className="room-content text-center mt-5">
             <h1>This is a RoomClass</h1>
             <p>{number.num}</p>
             <button onClick={addNum} className="btn btn-success">+</button>

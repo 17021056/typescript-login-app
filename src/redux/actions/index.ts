@@ -1,20 +1,14 @@
 // import { createAction } from "typesafe-actions";
 import axios from 'axios'
 import * as Types from '../../constants/ActionTypes'
-import { API_URL_LOCAL } from '../../constants/config'
+import { API_URL_HEROKU,API_URL_LOCAL } from '../../constants/config'
 import * as actions from '../../redux/actions/index'
-
-interface rawType {
-    email: string;
-    password: string;
-    isremember:boolean
-}
+import { rawType, rawSignUpType} from  '../../constants/dataType'
 
 export const increment = ()=>{
     return { type: Types.ADD}
 }
-
-
+//LOGIN_APP
 export const fetchLoginApp = (raw:rawType)=>{
     return (dispatch:any) =>{
         const data = {
@@ -24,7 +18,7 @@ export const fetchLoginApp = (raw:rawType)=>{
         return(
             axios({
                 method: 'POST',
-                url: `${API_URL_LOCAL}/users/login`,
+                url: `${API_URL_HEROKU}/users/login`,
                 data: data,
             })
             .then( res=>{
@@ -34,8 +28,12 @@ export const fetchLoginApp = (raw:rawType)=>{
                         console.log('oke')
                         dispatch(actions.saveTokenLocal(res.data.token))
                     }
-                    else if(raw.isremember===false){dispatch(actions.saveToken(res.data.token))}
+                    else if(raw.isremember===false){
+                        dispatch(actions.saveToken(res.data.token))
+                    }
                 }
+            })
+            .catch(err=>{
             })
         ) 
     }
@@ -43,22 +41,22 @@ export const fetchLoginApp = (raw:rawType)=>{
 export const loginApp = ()=>{
     return { type: Types.LOGIN_APP}
 }
-
+//SAVE_TOKEN
 export const saveToken = (token:string)=>{
     return { type: Types.SAVE_TOKEN,token}
 }
-
+//KEEP LOGIN
 export const saveTokenLocal = (token:string)=>{
     return { type: Types.SAVE_TOKEN_LOCAL,token}
 }
-
+//LOGOUT_APP
 export const fetchLogoutApp = (token:string)=>{
     return (dispatch:any) =>{
         console.log(token)
         return(
             axios({
                 method: 'POST',
-                url: `${API_URL_LOCAL}/users/me/logout`,
+                url: `${API_URL_HEROKU}/users/me/logout`,
                 headers: { 
                     'Authorization': `Bearer ${token}`
                 }
@@ -76,12 +74,7 @@ export const fetchLogoutApp = (token:string)=>{
 export const logoutApp = ()=>{
     return { type: Types.LOGOUT_APP}
 }
-interface rawSignUpType {
-    name: string
-    email: string;
-    password: string;
-}
-
+//SIGNUP_APP
 export const fetchSignUpApp = (rawSignUp:rawSignUpType)=>{
     return (dispatch:any) =>{
         
@@ -89,7 +82,7 @@ export const fetchSignUpApp = (rawSignUp:rawSignUpType)=>{
         return(
             axios({
                 method: 'POST',
-                url: `${API_URL_LOCAL}/users`,
+                url: `${API_URL_HEROKU}/users`,
                 headers: { 
                     'Content-Type': 'application/json'
                   },
@@ -108,14 +101,14 @@ export const fetchSignUpApp = (rawSignUp:rawSignUpType)=>{
 export const signupApp = (username:string)=>{
     return { type: Types.SIGNUP_APP,username}
 }
-
+//Get Profile USER
 export const fetchProfileUser = (token:string)=>{
     return (dispatch:any) =>{
         
         return(
             axios({
                 method: 'GET',
-                url: `${API_URL_LOCAL}/users/me`,
+                url: `${API_URL_HEROKU}/users/me`,
                 headers: { 
                     'Authorization': `Bearer ${token}`
                 }

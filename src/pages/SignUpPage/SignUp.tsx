@@ -42,42 +42,50 @@ function SignUp() {
                 <div className="col-xl-5 col-lg-5 col-md-7 col-sm-9">
                     <form  onSubmit={e=>_onSubmit(e)} className="content__form text-white text-center">
                         <h1 className="m-3">SignUp</h1>
-                        <input 
-                            type="text" 
-                            className="form__input-email p-2 pl-3 mt-4 ml-4 mr-4 mb-4" 
-                            placeholder="name"
-                            name="name"
-                            value={signup.name}
-                            onChange ={(e)=>_onchange(e)}
-                            required
-                        />
-                        <input 
-                            type="email" 
-                            className="form__input-email p-2 pl-3 ml-4 mr-4 mb-4" 
-                            placeholder="username"
-                            name="username"
-                            value={signup.username}
-                            onChange ={(e)=>_onchange(e)}
-                            required
-                        />
-                        <input 
-                            type="password" 
-                            placeholder="password"
-                            className="form__input-email p-2 pl-3 ml-4 mr-4 mb-4" 
-                            name="password"
-                            value={signup.password}
-                            onChange ={(e)=>_onchange(e)}
-                            required
-                        />
-                         <input 
-                            type="password" 
-                            placeholder="confirm password"
-                            name="cfpassword"
-                            className="form__input-email p-2 pl-3 ml-4 mr-4 mb-5"
-                            value={signup.cfpassword}
-                            onChange ={(e)=>_onchange(e)}
-                            required
-                        />
+                        <div className="form__input mb-3 pl-4 pr-4">
+                            <input 
+                                type="text" 
+                                className="p-2 mb-2" 
+                                placeholder="name"
+                                name="name"
+                                value={signup.name}
+                                onChange ={(e)=>_onchange(e)}
+                                required
+                            />
+                        </div>
+                        <div className="form__input mb-3 pl-4 pr-4">
+                            <input 
+                                type="email" 
+                                className="p-2 mb-2" 
+                                placeholder="username"
+                                name="username"
+                                value={signup.username}
+                                onChange ={(e)=>_onchange(e)}
+                                required
+                            />
+                        </div>
+                        <div className="form__input mb-3 pl-4 pr-4">
+                            <input 
+                                type="password" 
+                                placeholder="password"
+                                className="p-2 mb-2" 
+                                name="password"
+                                value={signup.password}
+                                onChange ={(e)=>_onchange(e)}
+                                required
+                            />   
+                        </div>
+                        <div className="form__input mb-5 pl-4 pr-4">
+                            <input 
+                                type="password" 
+                                placeholder="confirm password"
+                                name="cfpassword"
+                                className="p-2 mb-2"
+                                value={signup.cfpassword}
+                                onChange ={(e)=>_onchange(e)}
+                                required
+                            />   
+                        </div> 
                         <div className="mb-4">
                             <button type="submit" className="btn text-white btn-outline-dark mr-2">SignUp</button>
                             <Link to="/Login" className="text-dark" style={{textDecoration:"none"}}>

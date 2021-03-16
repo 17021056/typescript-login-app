@@ -4,6 +4,6 @@ import profile from './profile';
 
 const appReducers = combineReducers({
     authState,
-    profile
+    profile,
 })
 export default appReducers

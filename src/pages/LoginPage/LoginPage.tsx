@@ -3,16 +3,25 @@ import { Link, useHistory } from 'react-router-dom';
 import  './LoginPage.css'
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../redux/actions/index'
+import {checkInputLogin} from '../../helper/helper'
 
 function LoginPage() {
     let history = useHistory();
     const authState = useSelector((state:RootStateOrAny) =>state.authState)
+    const notification = useSelector((state:RootStateOrAny) =>state.message)
+    const dispatch = useDispatch()
     const [login, setLogin] = useState({
         username: '',
         password:'',
         isremember: false
     })
+    const [message , setMessage] = useState({
+        username : '',
+        password: '',
+    })
+   
     useEffect(() => {
+        console.log(authState.username)
         setLogin((prevState)=>{
             return{
                 ...prevState,
@@ -20,16 +29,25 @@ function LoginPage() {
             }
         })
     }, [authState])
-    const dispatch = useDispatch()
     const _onchange =(e:any) => {
         let key = e.target.name
         let value = e.target.type === 'checkbox'?  e.target.checked : e.target.value
-        setLogin((prevState)=>{
-           return { 
-            ...prevState,
-            [key]: value
+        setLogin(
+            (prevState)=>{
+                return { 
+                ...prevState,
+                [key]: value,
             }
         })
+        setMessage(
+            (prevState)=>{
+                return { 
+                 ...prevState,
+                 [key]: '',
+                 statuslogin: '',
+                 }
+             }
+        )
     }
     const _loginApp = (raw:any)=>{
         dispatch(actions.fetchLoginApp(raw))
@@ -42,16 +60,38 @@ function LoginPage() {
             password: login.password,
             isremember: login.isremember
         }
-        if(login.isremember){
-           if(window.confirm('Are you sure to keep login?'))
-           {
-              _loginApp(raw)       
-           }
-        }
-        else{
-            _loginApp(raw)
-        }
-       
+        let statusSubmit = checkInputLogin(login.username, login.password)
+        setMessage(prevState=>{
+            return{ 
+                ...prevState,
+                username : statusSubmit.message.messageUserName,
+                password: statusSubmit.message.messagePassword,
+            }        
+        })
+        console.log(statusSubmit)
+        if(statusSubmit.isSubmit){
+            if(login.isremember){
+                if(window.confirm('Are you sure to keep login?'))
+                {
+                _loginApp(raw)
+                setMessage(prevState=>{
+                    return{ 
+                        ...prevState,
+                        statuslogin:notification,
+                    }        
+                })       
+                }
+             }
+             else{
+                 _loginApp(raw)
+                 setMessage(prevState=>{
+                    return{ 
+                        ...prevState,
+                        statuslogin:notification,
+                    }        
+                })
+             }            
+        } 
     }
     const _resetForm = () => {
         setLogin((prevState)=>{
@@ -74,24 +114,28 @@ function LoginPage() {
                 <div className="col-xl-5 col-lg-5 col-md-7 col-sm-9">
                     <form onSubmit={e=>_onSubmit(e)} className="content__form text-white text-center zoomInUp">
                         <h1 className="m-3">Login</h1>
-                        <input 
-                            type="text" 
-                            className="form__input-email p-2 pl-3 ml-4 mt-4 mr-4 mb-4" 
-                            placeholder="username"
-                            value = {login.username}
-                            onChange ={(e)=>_onchange(e)}
-                            name="username"
-                            required
-                        />
-                        <input 
-                            type="password" 
-                            placeholder="password"
-                            className="form__input-email p-2 pl-3 ml-4 mr-4 mb-4" 
-                            value = {login.password}
-                            required
-                            onChange ={_onchange}
-                            name="password"
-                        />
+                        <div className="form__input mb-3 pl-4 pr-4">
+                            <input 
+                                type="text" 
+                                className=" p-2 mb-2" 
+                                placeholder="username"
+                                value = {login.username}
+                                onChange ={(e)=>_onchange(e)}
+                                name="username"
+                            />
+                            <div>{message.username}</div>
+                        </div>
+                        <div className="form__input mb-3 pl-4 pr-4">
+                            <input 
+                                type="password" 
+                                placeholder="password"
+                                className=" p-2 mb-2" 
+                                value = {login.password}
+                                onChange ={_onchange}
+                                name="password"
+                            />
+                            <div>{message.password}</div>
+                        </div>
                         <div className="form__check-input">
                             <input 
                                 type="checkbox" 
@@ -105,8 +149,7 @@ function LoginPage() {
                         </div>
                         
                         <div className="mb-4">
-                            <button type="submit" className="btn text-white btn-outline-dark mr-2">Login</button>
-                            
+                            <button type="submit" className="btn text-white btn-outline-dark mr-2">Login</button>                           
                                 <Link to="/Signup" className="text-dark" style={{textDecoration:"none"}}>
                                      <button type="submit" className="btn text-dark btn-light">Signup</button>
                                 </Link>
