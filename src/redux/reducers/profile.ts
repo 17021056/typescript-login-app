@@ -9,8 +9,8 @@ const profile =(state=initialState , action:any)=>{
     switch(action.type) {
         case Types.GET_PROFILE :
         state = {
-            name: action.data.name,
-            username: action.data.username
+            name: action.payload.data.name,
+            username: action.payload.data.username
         }
         return {...state}
         default:

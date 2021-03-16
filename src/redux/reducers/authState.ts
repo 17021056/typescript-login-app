@@ -23,14 +23,15 @@ const authState =(state=initialState , action:any)=>{
             state.token=''
             return {...state}
         case Types.SAVE_TOKEN :
-            state.token = action.token
+            console.log(action)
+            state.token = action.payload.token
             return {...state}
         case Types.SAVE_TOKEN_LOCAL :
-            state.token = action.token
+            state.token = action.payload.token
             localStorage.setItem('token',JSON.stringify(action.token))
             return {...state}
         case Types.SIGNUP_APP :
-            state.username = action.username
+            state.username = action.payload.username
             return {...state}
         default: 
             return state

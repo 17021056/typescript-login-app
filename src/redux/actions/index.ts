@@ -1,4 +1,4 @@
-// import { createAction } from "typesafe-actions";
+import { action,createAction } from "typesafe-actions";
 import axios from 'axios'
 import * as Types from '../../constants/ActionTypes'
 import { API_URL_LOCAL } from '../../constants/config'
@@ -10,11 +10,31 @@ interface rawType {
     isremember:boolean
 }
 
-export const increment = ()=>{
-    return { type: Types.ADD}
-}
+// export const increment = ()=>{
+//     return { type: Types.ADD}
+// }
+// export const loginApp = ()=>{
+//     return { type: Types.LOGIN_APP}
 
+// }
 
+// export const saveToken = (token:string)=>{
+    //     return { type: Types.SAVE_TOKEN,token}
+    // }
+// export const saveTokenLocal = (token:string)=>{
+//     return { type: Types.SAVE_TOKEN_LOCAL,token}
+// }
+// export const logoutApp = ()=>{
+//     return { type: Types.LOGOUT_APP}
+// }
+// export const signupApp = (username:string)=>{
+//     return { type: Types.SIGNUP_APP,username}
+// }
+
+// export const getProfileUser = (data:object)=>{
+//     return { type: Types.GET_PROFILE,data}
+// }
+export const increment =()=> action(Types.ADD)
 export const fetchLoginApp = (raw:rawType)=>{
     return (dispatch:any) =>{
         const data = {
@@ -40,18 +60,9 @@ export const fetchLoginApp = (raw:rawType)=>{
         ) 
     }
 }
-export const loginApp = ()=>{
-    return { type: Types.LOGIN_APP}
-}
-
-export const saveToken = (token:string)=>{
-    return { type: Types.SAVE_TOKEN,token}
-}
-
-export const saveTokenLocal = (token:string)=>{
-    return { type: Types.SAVE_TOKEN_LOCAL,token}
-}
-
+export const loginApp = ()=>action(Types.LOGIN_APP)
+export const saveToken = (token:string)=>action(Types.SAVE_TOKEN,{token})
+export const saveTokenLocal = (token:string)=>action(Types.SAVE_TOKEN_LOCAL,{token})
 export const fetchLogoutApp = (token:string)=>{
     return (dispatch:any) =>{
         console.log(token)
@@ -72,16 +83,12 @@ export const fetchLogoutApp = (token:string)=>{
         ) 
     }
 }
-
-export const logoutApp = ()=>{
-    return { type: Types.LOGOUT_APP}
-}
+export const logoutApp = ()=>action(Types.LOGOUT_APP)
 interface rawSignUpType {
     name: string
     email: string;
     password: string;
 }
-
 export const fetchSignUpApp = (rawSignUp:rawSignUpType)=>{
     return (dispatch:any) =>{
         
@@ -104,11 +111,7 @@ export const fetchSignUpApp = (rawSignUp:rawSignUpType)=>{
         ) 
     }
 }
-
-export const signupApp = (username:string)=>{
-    return { type: Types.SIGNUP_APP,username}
-}
-
+export const signupApp = (username:string)=>action(Types.SIGNUP_APP,{username})
 export const fetchProfileUser = (token:string)=>{
     return (dispatch:any) =>{
         
@@ -135,8 +138,4 @@ export const fetchProfileUser = (token:string)=>{
         ) 
     }
 }
-
-export const getProfileUser = (data:object)=>{
-    console.log(data)
-    return { type: Types.GET_PROFILE,data}
-}
+export const getProfileUser = (data:object)=>action(Types.GET_PROFILE,{data})
