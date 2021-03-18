@@ -4,6 +4,7 @@
     font-weight: bold;
     background-image: url('../../image/bg-login.jpg');
     background-size: cover;
+    position: relative;
 }
 #container .content {
     display:flex;
@@ -43,7 +44,9 @@
     from {opacity:0;}
     to {opacity: 1;}
   }
-
+#container .form__message{
+    color: rgb(255, 0, 0);
+}
 .room-content {
     height:100vh;
     background-image: url('../../image/bg-login.jpg');

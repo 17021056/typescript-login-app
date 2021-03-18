@@ -5,8 +5,29 @@ import * as actions from '../../redux/actions/index'
 import { rawType, rawSignUpType} from  '../../constants/dataType'
 import {postLoginApp} from '../../apis/LoginApi';
 
+
 export const increment = ()=>{
     return { type: Types.ADD}
+}
+//STOP_LOADING
+export const stopLoading = () =>{
+    return { type: Types.STOP_LOADING}
+}
+//START_LOADING
+export const startLoading = () =>{
+    return { type: Types.START_LOADING}
+}
+//NOTI_LOGIN_FAIL
+export const notifyLoginFailure = () =>{
+    return { type: Types.MESSAGE_LOGIN_FAILED}
+}
+//NOTI_SIGNUP_FAIL
+export const notifySignupFailure = () =>{
+    return { type: Types.MESSAGE_SIGNUP_FAILED}
+}
+//RESET_MESSAGE
+export const resetMessage = () =>{
+    return { type: Types.RESET_MESSAGE }
 }
 //LOGIN_APP
 export const fetchLoginApp = (raw:rawType)=>{
@@ -24,6 +45,7 @@ export const fetchLoginApp = (raw:rawType)=>{
             postLoginApp(data)
             .then( res=>{
                 if(res.status===200){
+                    dispatch(actions.stopLoading())
                     dispatch(actions.loginApp())
                     if(raw.isremember===true){
                         console.log('oke')
@@ -35,6 +57,8 @@ export const fetchLoginApp = (raw:rawType)=>{
                 }
             })
             .catch(err=>{
+                dispatch(actions.notifyLoginFailure())
+                dispatch(actions.stopLoading())
             })
         ) 
     }
@@ -53,7 +77,6 @@ export const saveTokenLocal = (token:string)=>{
 //LOGOUT_APP
 export const fetchLogoutApp = (token:string)=>{
     return (dispatch:any) =>{
-        console.log(token)
         return(
             axios({
                 method: 'POST',
@@ -64,10 +87,13 @@ export const fetchLogoutApp = (token:string)=>{
             })
             .then( res=>{
                 if(res.status===200){
+                    dispatch(actions.stopLoading())
                     dispatch(actions.logoutApp())                
                 }
             })
-            .catch(err=>{console.log(err)})
+            .catch(err=>{
+                dispatch(actions.stopLoading())
+            })
         ) 
     }
 }
@@ -76,10 +102,8 @@ export const logoutApp = ()=>{
     return { type: Types.LOGOUT_APP}
 }
 //SIGNUP_APP
-export const fetchSignUpApp = (rawSignUp:rawSignUpType)=>{
+export const fetchSignUpApp = (rawSignUp:rawSignUpType,history:any)=>{
     return (dispatch:any) =>{
-        
-        console.log(JSON.stringify(rawSignUp))
         return(
             axios({
                 method: 'POST',
@@ -91,10 +115,15 @@ export const fetchSignUpApp = (rawSignUp:rawSignUpType)=>{
             })
             .then( res=>{
                 if(res.status===201){
-                   dispatch(signupApp(res.data.user.email))                
+                   dispatch(actions.stopLoading())
+                   dispatch(signupApp(res.data.user.email))
+                   history.push('/Login')                
                 }
             })
-            .catch(err=>{console.log(err)})
+            .catch(err=>{ 
+                dispatch(actions.stopLoading())
+                dispatch(actions.notifySignupFailure())
+            })
         ) 
     }
 }
@@ -121,7 +150,7 @@ export const fetchProfileUser = (token:string)=>{
                     username : res.data.email,
                 }
                 if(res.status===200){
-                    console.log(data)
+                    dispatch(actions.stopLoading())
                     dispatch(getProfileUser(data))
                 }
             })
