@@ -2,6 +2,7 @@ import React from 'react';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Link,Route } from 'react-router-dom';
 import * as actions from '../../redux/actions/index'
+import Loading from '../Loading/Loading';
 
 
 interface RouteProp {
@@ -43,10 +44,12 @@ const  showMenuBar=(menubars: {
 }
 
 function MenuBar() {
+    const isloading = useSelector((state:RootStateOrAny) =>state.loadingscreen)
     const authState = useSelector((state:RootStateOrAny) =>state.authState)
     const dispatch = useDispatch()
     const logoutApp =()=>{
         console.log(authState.token)
+        dispatch(actions.startLoading())
         dispatch(actions.fetchLogoutApp(authState.token))
     }
     const menubars = [
@@ -87,6 +90,7 @@ function MenuBar() {
                 }
                 
             </div>
+            { isloading ? <Loading/>:''} 
         </nav>
     );
 }

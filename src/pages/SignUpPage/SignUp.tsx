@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import Loading from '../../components/Loading/Loading';
+import {checkInput} from '../../helper/helper'
 import * as actions from '../../redux/actions/index'
 
 function SignUp() {
@@ -10,8 +12,16 @@ function SignUp() {
         password:'',
         cfpassword: '',
     })
+    const [message , setMessage] = useState({
+        name:'',
+        username : '',
+        password: '',
+        cfpassword: '',
+    })
+    const isloading = useSelector((state:RootStateOrAny) =>state.loadingscreen)
+    const messageSignup = useSelector((state:RootStateOrAny) =>state.message)
+    const history = useHistory()
     const dispatch = useDispatch()
-    let history = useHistory()
     const _onchange =(e:any) => {
         let key = e.target.name
         let value = e.target.value
@@ -21,9 +31,19 @@ function SignUp() {
             [key]: value
             }
         })
+        setMessage((prevState)=>{
+            return { 
+             ...prevState,
+             [key]: ''
+             }
+         })
+         if(key==='username' && value.length>=1){
+            dispatch(actions.resetMessage())
+        }
     }
     const _onSignup = (rawSignUp:any) => {
-        dispatch(actions.fetchSignUpApp(rawSignUp))
+        dispatch(actions.startLoading())
+        dispatch(actions.fetchSignUpApp(rawSignUp,history))
     }
     const _onSubmit = (e:any) =>{
         e.preventDefault()
@@ -31,9 +51,15 @@ function SignUp() {
             "name":`${signup.name}`,
             "email":`${signup.username}`,
             "password":`${signup.password}`}
-        if(signup.password===signup.cfpassword){
+        let statusSubmit = checkInput(signup.name,signup.username, signup.password,signup.cfpassword)
+        setMessage({
+            name:statusSubmit.message.messageName,
+            username : statusSubmit.message.messageUserName,
+            password: statusSubmit.message.messagePassword,
+            cfpassword: statusSubmit.message.messagecfpassword,
+        })
+        if(statusSubmit.isSubmit){
             _onSignup(rawSignUp)
-            history.push('/Login')
         }
     }
     return (
@@ -50,8 +76,8 @@ function SignUp() {
                                 name="name"
                                 value={signup.name}
                                 onChange ={(e)=>_onchange(e)}
-                                required
                             />
+                            <div>{message.name}</div>
                         </div>
                         <div className="form__input mb-3 pl-4 pr-4">
                             <input 
@@ -61,8 +87,8 @@ function SignUp() {
                                 name="username"
                                 value={signup.username}
                                 onChange ={(e)=>_onchange(e)}
-                                required
                             />
+                            <div>{message.username}</div>
                         </div>
                         <div className="form__input mb-3 pl-4 pr-4">
                             <input 
@@ -72,10 +98,10 @@ function SignUp() {
                                 name="password"
                                 value={signup.password}
                                 onChange ={(e)=>_onchange(e)}
-                                required
                             />   
+                            <div>{message.password}</div>
                         </div>
-                        <div className="form__input mb-5 pl-4 pr-4">
+                        <div className="form__input mb-4 pl-4 pr-4">
                             <input 
                                 type="password" 
                                 placeholder="confirm password"
@@ -83,9 +109,10 @@ function SignUp() {
                                 className="p-2 mb-2"
                                 value={signup.cfpassword}
                                 onChange ={(e)=>_onchange(e)}
-                                required
                             />   
+                            <div>{message.cfpassword}</div>
                         </div> 
+                        <div className="form__message mb-2">{messageSignup}</div>
                         <div className="mb-4">
                             <button type="submit" className="btn text-white btn-outline-dark mr-2">SignUp</button>
                             <Link to="/Login" className="text-dark" style={{textDecoration:"none"}}>
@@ -95,7 +122,9 @@ function SignUp() {
                     </form>
                 </div>
             </div>
+            { isloading ? <Loading/>:''} 
         </div>
+       
     );
 }
 

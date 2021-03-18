@@ -9,6 +9,7 @@ function Profile() {
     const token = useSelector((state:RootStateOrAny) =>state.authState.token)
     const dispatch = useDispatch()
     useEffect(() =>{
+        dispatch(actions.startLoading())
         dispatch(actions.fetchProfileUser(token))
     },[dispatch,token])
     return (
