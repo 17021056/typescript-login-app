@@ -3,6 +3,10 @@ export interface rawType {
     password: string;
     isremember:boolean
 }
+export interface dataType {
+    email: string;
+    password: string;
+}
 export interface rawSignUpType {
     name: string
     email: string;

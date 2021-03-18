@@ -1,9 +1,9 @@
-// import { createAction } from "typesafe-actions";
 import axios from 'axios'
 import * as Types from '../../constants/ActionTypes'
-import { API_URL_HEROKU,API_URL_LOCAL } from '../../constants/config'
+import { API_URL_HEROKU } from '../../constants/config'
 import * as actions from '../../redux/actions/index'
 import { rawType, rawSignUpType} from  '../../constants/dataType'
+import {postLoginApp} from '../../apis/LoginApi';
 
 export const increment = ()=>{
     return { type: Types.ADD}
@@ -16,11 +16,12 @@ export const fetchLoginApp = (raw:rawType)=>{
             password: raw.password
         }
         return(
-            axios({
-                method: 'POST',
-                url: `${API_URL_HEROKU}/users/login`,
-                data: data,
-            })
+            // axios({
+            //     method: 'POST',
+            //     url: `${API_URL_HEROKU}/users/login`,
+            //     data: data,
+            // })
+            postLoginApp(data)
             .then( res=>{
                 if(res.status===200){
                     dispatch(actions.loginApp())
