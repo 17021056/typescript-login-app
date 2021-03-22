@@ -33,39 +33,33 @@ export const resetMessage = () =>{
 }
 // LOGIN_APP
 export const fetchLoginApp = (raw:rawType)=>{
-    return{ type: Types.FETCH_LOGIN_APP,
-        payload :{
-            data : raw
+    return (dispatch:any) =>{
+        const data = {
+            email:  raw.email,
+            password: raw.password
         }
+        return(
+            postLoginApp(data)
+            .then( res=>{
+                if(res.status===200){
+                    dispatch(actions.stopLoading())
+                    dispatch(actions.loginApp())
+                    if(raw.isremember===true){
+                        console.log('oke')
+                        dispatch(actions.saveTokenLocal(res.data.token))
+                    }
+                    else if(raw.isremember===false){
+                        dispatch(actions.saveToken(res.data.token))
+                    }
+                }
+            })
+            .catch(err=>{
+                dispatch(actions.notifyLoginFailure())
+                dispatch(actions.stopLoading())
+            })
+        ) 
     }
 }
-//     return (dispatch:any) =>{
-//         const data = {
-//             email:  raw.email,
-//             password: raw.password
-//         }
-//         return(
-//             postLoginApp(data)
-//             .then( res=>{
-//                 if(res.status===200){
-//                     dispatch(actions.stopLoading())
-//                     dispatch(actions.loginApp())
-//                     if(raw.isremember===true){
-//                         console.log('oke')
-//                         dispatch(actions.saveTokenLocal(res.data.token))
-//                     }
-//                     else if(raw.isremember===false){
-//                         dispatch(actions.saveToken(res.data.token))
-//                     }
-//                 }
-//             })
-//             .catch(err=>{
-//                 dispatch(actions.notifyLoginFailure())
-//                 dispatch(actions.stopLoading())
-//             })
-//         ) 
-//     }
-// }
 export const loginApp = ()=>{
     return { type: Types.LOGIN_APP}
 }
