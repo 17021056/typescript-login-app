@@ -16,8 +16,11 @@ class AxiosService {
   get(url: string) {
     return this.instance.get(url);
   }
-  post(url: string,data:dataType){
+  postLogin(url: string,data:dataType){
       return this.instance.post(url,data);
+  }
+  postRequest(config:any){
+      return this.instance.request(config)
   }
 }
 

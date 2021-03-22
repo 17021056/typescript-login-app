@@ -17,6 +17,8 @@ const authState =(state=initialState , action:any)=>{
         case Types.LOGIN_APP :
             state.isLogin = true
             return {...state}
+        case Types.FETCH_LOGIN_APP :
+            return {...state}
         case Types.LOGOUT_APP :
             state.isLogin = false
             localStorage.removeItem('token')

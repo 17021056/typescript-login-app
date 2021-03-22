@@ -2,6 +2,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import createSagaMiddleware  from 'redux-saga';
 import appReducers from "./reducers";
+import rootSaga from '../sagas';
 const sagaMiddleware = createSagaMiddleware()
 declare global {
     interface Window {
@@ -14,4 +15,5 @@ const store = createStore(
     appReducers,   
     composeEnhancer(applyMiddleware(thunk),applyMiddleware(sagaMiddleware)),
 )
+sagaMiddleware.run(rootSaga)
 export default store

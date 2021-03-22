@@ -1,5 +1,6 @@
 export const ADD = 'ADD'
 export const LOGIN_APP = 'LOGIN_APP'
+export const FETCH_LOGIN_APP = 'FETCH_LOGIN_APP'
 export const LOGOUT_APP = 'LOGOUT_APP'
 export const SIGNUP_APP = 'SIGNUP_APP'
 export const GET_PROFILE = 'GET_PROFILE'

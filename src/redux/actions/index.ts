@@ -4,6 +4,8 @@ import { API_URL_HEROKU } from '../../constants/config'
 import * as actions from '../../redux/actions/index'
 import { rawType, rawSignUpType} from  '../../constants/dataType'
 import {postLoginApp} from '../../apis/LoginApi';
+import {postLogoutApp} from '../../apis/LogoutApi';
+import { postSignUpApp } from '../../apis/SignUp'
 
 
 export const increment = ()=>{
@@ -29,40 +31,41 @@ export const notifySignupFailure = () =>{
 export const resetMessage = () =>{
     return { type: Types.RESET_MESSAGE }
 }
-//LOGIN_APP
+// LOGIN_APP
 export const fetchLoginApp = (raw:rawType)=>{
-    return (dispatch:any) =>{
-        const data = {
-            email:  raw.email,
-            password: raw.password
+    return{ type: Types.FETCH_LOGIN_APP,
+        payload :{
+            data : raw
         }
-        return(
-            // axios({
-            //     method: 'POST',
-            //     url: `${API_URL_HEROKU}/users/login`,
-            //     data: data,
-            // })
-            postLoginApp(data)
-            .then( res=>{
-                if(res.status===200){
-                    dispatch(actions.stopLoading())
-                    dispatch(actions.loginApp())
-                    if(raw.isremember===true){
-                        console.log('oke')
-                        dispatch(actions.saveTokenLocal(res.data.token))
-                    }
-                    else if(raw.isremember===false){
-                        dispatch(actions.saveToken(res.data.token))
-                    }
-                }
-            })
-            .catch(err=>{
-                dispatch(actions.notifyLoginFailure())
-                dispatch(actions.stopLoading())
-            })
-        ) 
     }
 }
+//     return (dispatch:any) =>{
+//         const data = {
+//             email:  raw.email,
+//             password: raw.password
+//         }
+//         return(
+//             postLoginApp(data)
+//             .then( res=>{
+//                 if(res.status===200){
+//                     dispatch(actions.stopLoading())
+//                     dispatch(actions.loginApp())
+//                     if(raw.isremember===true){
+//                         console.log('oke')
+//                         dispatch(actions.saveTokenLocal(res.data.token))
+//                     }
+//                     else if(raw.isremember===false){
+//                         dispatch(actions.saveToken(res.data.token))
+//                     }
+//                 }
+//             })
+//             .catch(err=>{
+//                 dispatch(actions.notifyLoginFailure())
+//                 dispatch(actions.stopLoading())
+//             })
+//         ) 
+//     }
+// }
 export const loginApp = ()=>{
     return { type: Types.LOGIN_APP}
 }
@@ -78,13 +81,14 @@ export const saveTokenLocal = (token:string)=>{
 export const fetchLogoutApp = (token:string)=>{
     return (dispatch:any) =>{
         return(
-            axios({
-                method: 'POST',
-                url: `${API_URL_HEROKU}/users/me/logout`,
-                headers: { 
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            // axios({
+            //     method: 'POST',
+            //     url: `${API_URL_HEROKU}/users/me/logout`,
+            //     headers: { 
+            //         'Authorization': `Bearer ${token}`
+            //     }
+            // })
+            postLogoutApp(token)
             .then( res=>{
                 if(res.status===200){
                     dispatch(actions.stopLoading())
@@ -105,14 +109,15 @@ export const logoutApp = ()=>{
 export const fetchSignUpApp = (rawSignUp:rawSignUpType,history:any)=>{
     return (dispatch:any) =>{
         return(
-            axios({
-                method: 'POST',
-                url: `${API_URL_HEROKU}/users`,
-                headers: { 
-                    'Content-Type': 'application/json'
-                  },
-                data: JSON.stringify(rawSignUp)
-            })
+            // axios({
+            //     method: 'POST',
+            //     url: `${API_URL_HEROKU}/users`,
+            //     headers: { 
+            //         'Content-Type': 'application/json'
+            //       },
+            //     data: JSON.stringify(rawSignUp)
+            // })
+            postSignUpApp(rawSignUp)
             .then( res=>{
                 if(res.status===201){
                    dispatch(actions.stopLoading())
